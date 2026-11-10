@@ -1,4 +1,4 @@
-# SailfishOS-specific patches for Samsung Galaxy Grand Prime
+# SailfishOS patches for Samsung Galaxy Grand Prime
 
 Apply these patches before building and packaging anything and after applying the base hybris-patches. The scirpt is identical to base hybris-patches.
 

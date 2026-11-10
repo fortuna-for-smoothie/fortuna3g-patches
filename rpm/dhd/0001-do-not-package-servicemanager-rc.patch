@@ -1,0 +1,13 @@
+diff --git a/droid-hal-device.inc b/droid-hal-device.inc
+index d286170..be1dec3 100644
+--- a/droid-hal-device.inc
++++ b/droid-hal-device.inc
+@@ -685,7 +685,7 @@ sed -i -e '/^[[:space:]]*mkdir[[:space:]]\/tmp[[:space:]]*/s/^/# Removed during
+ 
+ if [ $android_version_major -ge "7" ]; then
+ mkdir -p $RPM_BUILD_ROOT%{_libexecdir}/droid-hybris/system/etc/init
+-cp -a %{android_root}/out/target/product/%{device}/system/etc/init/servicemanager.rc $RPM_BUILD_ROOT%{_libexecdir}/droid-hybris/system/etc/init/
++# cp -a %{android_root}/out/target/product/%{device}/system/etc/init/servicemanager.rc $RPM_BUILD_ROOT%{_libexecdir}/droid-hybris/system/etc/init/
+ echo "%{_libexecdir}/droid-hybris/system/etc/init/*.rc" > tmp/droid-hal.files
+ 
+ if [ $android_version_major -ge "11" ]; then
