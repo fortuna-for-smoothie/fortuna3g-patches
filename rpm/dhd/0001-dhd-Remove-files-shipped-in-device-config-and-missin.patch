@@ -1,0 +1,57 @@
+From 54a9334ebd614617aa28d238a91f1d89f475a2fc Mon Sep 17 00:00:00 2001
+From: Smooth-E <smoothie@disroot.org>
+Date: Thu, 19 Nov 2026 23:53:29 +0300
+Subject: [PATCH] [dhd] Remove files shipped in device config and missing files
+
+---
+ droid-hal-device.inc | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
+
+diff --git a/droid-hal-device.inc b/droid-hal-device.inc
+index 7717982..be1dec3 100644
+--- a/droid-hal-device.inc
++++ b/droid-hal-device.inc
+@@ -685,13 +685,13 @@ sed -i -e '/^[[:space:]]*mkdir[[:space:]]\/tmp[[:space:]]*/s/^/# Removed during
+ 
+ if [ $android_version_major -ge "7" ]; then
+ mkdir -p $RPM_BUILD_ROOT%{_libexecdir}/droid-hybris/system/etc/init
+-cp -a %{android_root}/out/target/product/%{device}/system/etc/init/servicemanager.rc $RPM_BUILD_ROOT%{_libexecdir}/droid-hybris/system/etc/init/
++# cp -a %{android_root}/out/target/product/%{device}/system/etc/init/servicemanager.rc $RPM_BUILD_ROOT%{_libexecdir}/droid-hybris/system/etc/init/
+ echo "%{_libexecdir}/droid-hybris/system/etc/init/*.rc" > tmp/droid-hal.files
+ 
+ if [ $android_version_major -ge "11" ]; then
+ mkdir -p $RPM_BUILD_ROOT%{_libexecdir}/droid-hybris/system/etc/init/hw
+ cp -a %{android_root}/out/target/product/%{device}/system/etc/init/hw/init.rc $RPM_BUILD_ROOT%{_libexecdir}/droid-hybris/system/etc/init/hw/
+-cp -a %{android_root}/out/target/product/%{device}/system/etc/init/hw/init.zygote*.rc $RPM_BUILD_ROOT%{_libexecdir}/droid-hybris/system/etc/init/hw/
++# cp -a %{android_root}/out/target/product/%{device}/system/etc/init/hw/init.zygote*.rc $RPM_BUILD_ROOT%{_libexecdir}/droid-hybris/system/etc/init/hw/
+ 
+ # Now remove the mount commands from any .rc files as they're included in .mount unit files now
+ sed -i -e '/^[[:space:]]*mount[[:space:]]/s/^/# Removed during droid-hal-device build : /' $RPM_BUILD_ROOT%{_libexecdir}/droid-hybris/system/etc/init/hw/*rc || true
+@@ -715,9 +715,9 @@ else
+ echo "" > tmp/droid-hal.files
+ fi
+ 
+-if [ $android_version_major -lt "13" ]; then
+-echo "/default.prop" >> tmp/droid-hal.files
+-fi
++# if [ $android_version_major -lt "13" ]; then
++# echo "/default.prop" >> tmp/droid-hal.files
++# fi
+ 
+ cp -a %{android_root}/out/target/product/%{device}/system/bin $RPM_BUILD_ROOT%{_libexecdir}/droid-hybris/system/.
+ if [ -d %{android_root}/out/target/product/%{device}/system/lib ]; then
+@@ -756,6 +756,11 @@ if [ $android_version_major -ge "10" ] && [ $android_version_major -le "14" ]; t
+         apex_path=system/
+     fi
+ 
++    if [ ! -f "$art_path/$apex_path/lib/bionic/libc.so" ]; then
++        art_path=%{android_root}/out/target/product/%{device}/system
++        apex_path=apex/com.android.runtime
++    fi
++
+     rm -f $RPM_BUILD_ROOT%{_libexecdir}/droid-hybris/system/lib/lib{dl,dl_android,c,m}.so
+     if [ -d $art_path/$apex_path/lib ]; then
+         cp -a \
+-- 
+2.25.1
+
